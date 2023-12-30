@@ -3,12 +3,14 @@ import { AuthContext } from "../../Providers/AuthProvider";
 import { useContext } from "react";
 
 const Booking = () => {
+  const { user } = useContext(AuthContext);
+  console.log(user);
   const service = useLoaderData();
+  console.log(service);
   const { _id, title, price, img } = service;
-  const user = useContext(AuthContext);
 
   const handleBookService = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const from = event.target;
     const name = from.name.value;
     const date = from.date.value;
@@ -24,20 +26,20 @@ const Booking = () => {
     };
     console.log(booking);
 
-    fetch('http://localhost:5000/bookings',{
-      method: 'POST',
-      headers:{
-        'content-type': 'application/json'
+    fetch("http://localhost:5000/bookings", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
       },
-      body: JSON.stringify(booking)
+      body: JSON.stringify(booking),
     })
-    .then(res => res.json())
-    .then(data=>{
-      console.log(data);
-      if(data.insertedId){
-        alert('booking added successfully')
-      }
-    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.insertedId) {
+          alert("booking added successfully");
+        }
+      });
   };
   return (
     <div>
