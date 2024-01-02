@@ -10,7 +10,6 @@ const Services = () => {
         setServices(data);
       });
   }, []);
-  console.log(services)
   return (
     <div>
       <div className="text-center space-y-2">

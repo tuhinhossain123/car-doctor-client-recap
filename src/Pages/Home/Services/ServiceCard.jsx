@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { FaArrowCircleRight } from "react-icons/fa";
 
 const ServiceCard = ({ service }) => {
-  console.log(service)
   const { _id, img, title, price } = service;
   return (
     <div className="card card-compact border shadow-xl rounded-xl">

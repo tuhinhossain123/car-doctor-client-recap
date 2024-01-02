@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import BookingRow from "../BookingRow/BookingRow";
+import axios from "axios";
 
 const Bookings = () => {
   const { user } = useContext(AuthContext);
@@ -8,11 +9,15 @@ const Bookings = () => {
   const url = `http://localhost:5000/bookings?email=${user?.email}`;
 
   useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setBookings(data);
-      });
+    axios.get(url, {withCredentials: true})
+    .then((res) => {
+      setBookings(res.data);
+    });
+    // fetch(url)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setBookings(data);
+    //   });
   }, []);
   const handleDelete = (id) => {
     const proceed = confirm("are you sure you want to delete");
@@ -32,23 +37,22 @@ const Bookings = () => {
     }
   };
   const handleBookingConfirm = (id) => {
-    fetch(`http://localhost:5000/bookings/${id}`,{
-      method: 'PATCH',
+    fetch(`http://localhost:5000/bookings/${id}`, {
+      method: "PATCH",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json",
       },
-      body: JSON.stringify({status: 'confirm'})
-
+      body: JSON.stringify({ status: "confirm" }),
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        if(data.modifiedCount > 0){
+        if (data.modifiedCount > 0) {
           const remaining = bookings.filter((booking) => booking._id !== id);
           const update = bookings.find((booking) => booking._id !== id);
-          update.status= 'confirm';
+          update.status = "confirm";
           const newBooking = [update, ...remaining];
-          setBookings(newBooking)
+          setBookings(newBooking);
         }
       });
   };
